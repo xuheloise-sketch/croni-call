@@ -1,0 +1,125 @@
+# ringringring: your AI calls your phone for a voice conversation
+
+[中文](README.md) | English
+
+**Zero cost.** No Mac, no $99 developer account, no need to buy or write a native iOS app, no database to configure: install the free Linphone app on your iPhone and your AI can call you.
+
+No phone number to buy, no per-minute billing; speech recognition and speech synthesis both run on free tiers. All you need is a Linux server that is already running your AI. Calls come through even when the iPhone screen is off or Linphone is in the background.
+
+## Features
+
+- **Two-way voice calls**: the AI calls your phone and holds a multi-turn conversation once you pick up. Your speech is transcribed to text for the AI, and the AI's reply is synthesized and played back.
+- **Barge-in**: if you start speaking while the AI is talking, playback stops immediately, and the AI is told which part was spoken and which part was not.
+- **Single-line lock**: multiple AI entry points on the same host share one line; dialing again during a call returns busy.
+- **Privacy defaults**: logs record only connect, hang-up, error category and transcript text; the phone's network address is masked by default to reduce the risk of it entering the model's context (this is not strong isolation from the server administrator).
+- **Swappable recognition and synthesis**: both speech recognition and speech synthesis are configurable; see "Swapping speech recognition and speech synthesis".
+
+## Prerequisites
+
+| Item | Description | Cost |
+|---|---|---|
+| Linux server | x86_64, Python 3.11; the host that runs Claude Code / OpenCode | Already have |
+| Linphone | Phone app (App Store / app stores) | Free |
+| Linphone accounts ×2 | One for the phone, one for the AI (register in the app or at subscribe.linphone.org) | Free |
+| Groq API key | Speech recognition (console.groq.com) | Free tier |
+
+## Installation
+
+```bash
+git clone https://github.com/yanyan1115/ringringring.git && cd ringringring
+# Check for missing system packages (changes nothing)
+plugin-native/bin/install.sh --check
+# Install; add --no-apt to skip apt and only list the missing packages
+plugin-native/bin/install.sh --pjsua2 https://github.com/yanyan1115/ringringring/releases/download/v0.1.0/pjsua2-2.17-linux-x86_64-cp311.tar.gz --src .
+```
+
+The install directory is `~/.local/share/ringringring` and the config file is `~/.config/ringringring/voice.env` (mode 600).
+
+### Configuration
+
+Edit `~/.config/ringringring/voice.env` and fill in at least the following:
+
+```bash
+export VOICE_SIP_ID="sip:<AI account>@sip.linphone.org"
+export VOICE_SIP_USER="<AI account>"
+export VOICE_SIP_PASS="<password>"                   # credentials are stored only in this file
+export VOICE_SIP_CALLEE="sip:<phone account>@sip.linphone.org"
+export VOICE_DISPLAY_NAME="Claude"                   # caller ID name (some phones don't show emoji)
+export VOICE_STT_KEY="<Groq key>"                    # or point VOICE_STT_ENV_FILE at a separate file
+export VOICE_STT_LANG="zh"
+```
+
+### Network
+
+Open **UDP 4000-4100** (RTP audio) in the server firewall or your cloud provider's security group.
+
+## Connecting your AI
+
+**Claude Code**
+
+Run in Claude Code:
+
+```
+/plugin marketplace add yanyan1115/ringringring
+/plugin install ringringring@ringringring
+```
+
+You can also load the local directory directly: `claude --plugin-dir <repo path>/plugin-native`.
+
+Once loaded, it provides tools such as `call_start`, `converse` and `call_end`, plus the `phone-call` skill (the dial, talk and hang-up flow and the privacy conventions).
+
+**OpenCode and other MCP clients**
+
+Configure `plugin-native/bin/run-voice-native.sh` as a stdio MCP server. If the AI and the phone service are on different hosts, you can start the script on the phone service's host over SSH.
+
+## Swapping speech recognition and speech synthesis
+
+**Speech recognition (STT)**: any service compatible with the OpenAI `/audio/transcriptions` API is supported.
+
+```bash
+# Default: Groq
+export VOICE_STT_URL="https://api.groq.com/openai/v1/audio/transcriptions"
+export VOICE_STT_MODEL="whisper-large-v3-turbo"
+# OpenAI:
+# export VOICE_STT_URL="https://api.openai.com/v1/audio/transcriptions"
+# export VOICE_STT_MODEL="whisper-1"
+export VOICE_STT_KEY="<key>"
+```
+
+**Speech synthesis (TTS)**
+
+```bash
+# Default: Microsoft Edge TTS (zh-CN-YunxiNeural)
+export VOICE_TTS="edge"
+# Custom command: {text} is replaced with the text to synthesize, {out} with the output audio path.
+# The command is not run through a shell, so pipes and redirection are not supported; wrap them in a script if needed.
+# export VOICE_TTS_CMD="python3 my_tts.py --text {text} --out {out}"
+```
+
+## iPhone settings
+
+1. After installing, answer one call with the app in the foreground; after that, calls come through with the screen off or the app in the background.
+2. Settings → Accessibility → Touch → turn on "Prevent Lock to End Call", so an accidental press of the lock button doesn't hang up.
+3. Don't save the AI's number in Contacts, otherwise the caller ID shows the contact name instead of `VOICE_DISPLAY_NAME`.
+
+## FAQ
+
+| Symptom | Cause and fix |
+|---|---|
+| Answered but returns NO ANSWER | Linphone was suspended by the system in the background; bring the app to the foreground and try again |
+| Returns LINE BUSY | Another AI entry point on the same host is on a call; no need to redial |
+| Transcription slow or empty | Check the STT key and quota |
+| Names and proper nouns misrecognized | A known limitation of the free model; you can swap the STT service |
+
+## Thanks
+
+- **[Linphone](https://www.linphone.org/)**: provides free SIP accounts and the client. sip.linphone.org carries only signaling; audio flows directly between the server and the phone (not yet verified by packet capture). If your usage is heavy, please consider supporting Linphone or running your own SIP server.
+- **[Ringback](https://github.com/mohitbadwal/ringback)** (Apache 2.0): the upstream of this project.
+
+## Credits
+
+Research and design: Cora and South; implementation: Claude
+
+## License
+
+[AGPL-3.0-or-later](LICENSE). This project is derived from Ringback; the upstream code is licensed under Apache 2.0, and its original license and NOTICE are kept in [LICENSE-APACHE-2.0](LICENSE-APACHE-2.0) and [NOTICE](NOTICE). The pjproject dependency is GPL-2.0-or-later.
