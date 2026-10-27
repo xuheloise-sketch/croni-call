@@ -32,7 +32,7 @@ No phone number to buy, no per-minute billing; speech recognition and speech syn
 /plugin install ringringring@ringringring
 ```
 
-During installation, fill in the SIP account, password and speech recognition key when prompted. On first start the plugin downloads and installs its runtime by itself (about 15 seconds in our test); no script needs to be run by hand. If the server is missing system packages, the plugin fails to start and prints a `sudo apt-get install …` command; run it, then reconnect in `/mcp`.
+During installation, fill in the SIP account, password and speech recognition key when prompted (if there is no prompt, run `/plugin configure ringringring@ringringring`). On first start the plugin downloads and installs its runtime by itself (about 15 seconds in our test); no script needs to be run by hand. If the server is missing system packages, the plugin fails to start and prints a `sudo apt-get install …` command; run it, then reconnect in `/mcp`.
 
 **Option 2: manual installation**
 

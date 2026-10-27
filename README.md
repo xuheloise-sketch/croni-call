@@ -32,7 +32,7 @@
 /plugin install ringringring@ringringring
 ```
 
-安装时按提示填写 SIP 账号、密码与语音识别 key。插件首次启动时自动下载并安装运行环境（实测约 15 秒），无需手动执行脚本。如服务器缺少系统包，插件启动失败并给出一条 `sudo apt-get install …` 命令，执行后在 `/mcp` 中重新连接即可。
+安装时按提示填写 SIP 账号、密码与语音识别 key（未提示时可执行 `/plugin configure ringringring@ringringring`）。插件首次启动时自动下载并安装运行环境（实测约 15 秒），无需手动执行脚本。如服务器缺少系统包，插件启动失败并给出一条 `sudo apt-get install …` 命令，执行后在 `/mcp` 中重新连接即可。
 
 **方式二：手动安装**
 
