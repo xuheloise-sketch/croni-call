@@ -25,6 +25,17 @@ No phone number to buy, no per-minute billing; speech recognition and speech syn
 
 ## Installation
 
+**Option 1: install the plugin in Claude Code (recommended)**
+
+```
+/plugin marketplace add yanyan1115/ringringring
+/plugin install ringringring@ringringring
+```
+
+During installation, fill in the SIP account, password and speech recognition key when prompted. On first start the plugin downloads and installs its runtime by itself (about 15 seconds in our test); no script needs to be run by hand. If the server is missing system packages, the plugin fails to start and prints a `sudo apt-get install …` command; run it, then reconnect in `/mcp`.
+
+**Option 2: manual installation**
+
 ```bash
 git clone https://github.com/yanyan1115/ringringring.git && cd ringringring
 # Check for missing system packages (changes nothing)
@@ -33,16 +44,16 @@ plugin-native/bin/install.sh --check
 plugin-native/bin/install.sh --pjsua2 https://github.com/yanyan1115/ringringring/releases/download/v0.1.0/pjsua2-2.17-linux-x86_64-cp311.tar.gz --src .
 ```
 
-The install directory is `~/.local/share/ringringring` and the config file is `~/.config/ringringring/voice.env` (mode 600).
+With either option, the install directory is `~/.local/share/ringringring` and the config file is `~/.config/ringringring/voice.env` (mode 600).
 
 ### Configuration
 
-Edit `~/.config/ringringring/voice.env` and fill in at least the following:
+When installed as a plugin, fill these in at the installation prompts. Alternatively, edit `~/.config/ringringring/voice.env` and fill in at least the following (values already set in the plugin settings take precedence):
 
 ```bash
 export VOICE_SIP_ID="sip:<AI account>@sip.linphone.org"
 export VOICE_SIP_USER="<AI account>"
-export VOICE_SIP_PASS="<password>"                   # credentials are stored only in this file
+export VOICE_SIP_PASS="<password>"                   # when configured by hand, credentials are stored only in this file
 export VOICE_SIP_CALLEE="sip:<phone account>@sip.linphone.org"
 export VOICE_DISPLAY_NAME="Claude"                   # caller ID name (some phones don't show emoji)
 export VOICE_STT_KEY="<Groq key>"                    # or point VOICE_STT_ENV_FILE at a separate file
@@ -57,14 +68,7 @@ Open **UDP 4000-4100** (RTP audio) in the server firewall or your cloud provider
 
 **Claude Code**
 
-Run in Claude Code:
-
-```
-/plugin marketplace add yanyan1115/ringringring
-/plugin install ringringring@ringringring
-```
-
-You can also load the local directory directly: `claude --plugin-dir <repo path>/plugin-native`.
+Install the plugin as in Option 1 under "Installation". You can also load the local directory directly: `claude --plugin-dir <repo path>/plugin-native`.
 
 Once loaded, it provides tools such as `call_start`, `converse` and `call_end`, plus the `phone-call` skill (the dial, talk and hang-up flow and the privacy conventions).
 

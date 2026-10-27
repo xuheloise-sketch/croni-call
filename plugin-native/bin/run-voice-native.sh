@@ -42,8 +42,32 @@ done
 APP="$PREFIX/app"
 PY="$PREFIX/venv/bin/python"
 PJ="$PREFIX/pjsua2"
-[ -x "$PY" ] && [ -f "$APP/voice_mcp.py" ] && [ -d "$PJ/python" ] \
-  || die "Not installed under $PREFIX. Run: ${CLAUDE_PLUGIN_ROOT:-<plugin>}/bin/install.sh"
+
+# First start (or plugin updated): install everything under $PREFIX by itself.
+# A manual install.sh install (no .plugin-version marker) is left alone.
+# All output goes to stderr: stdout is the MCP channel. Never runs apt or needs root;
+# missing system packages are reported as one apt-get line by install.sh.
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO="https://github.com/yanyan1115/ringringring"
+PJSUA2_URL="${PJSUA2_URL:-$REPO/releases/download/v0.1.0/pjsua2-2.17-linux-x86_64-cp311.tar.gz}"
+VER="$(sed -n 's/^ *"version": *"\([^"]*\)".*/\1/p' "$ROOT/.claude-plugin/plugin.json" | head -1)"
+installed=0
+[ -x "$PY" ] && [ -f "$APP/voice_mcp.py" ] && [ -d "$PJ/python" ] && installed=1
+if [ "$installed" = 0 ] || { [ -f "$PREFIX/.plugin-version" ] && [ "$(cat "$PREFIX/.plugin-version")" != "$VER" ]; }; then
+  echo "[ringringring] installing v$VER to $PREFIX (first start, may take a minute)" >&2
+  if [ -f "$ROOT/../voice_mcp.py" ]; then
+    SRC="$(cd "$ROOT/.." && pwd)"
+  else
+    TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
+    curl -fsSL "$REPO/archive/refs/tags/v$VER.tar.gz" | tar -xz -C "$TMP" \
+      || die "could not download $REPO v$VER"
+    SRC="$(find "$TMP" -mindepth 1 -maxdepth 1 -type d | head -1)"
+  fi
+  bash "$ROOT/bin/install.sh" --no-apt --pjsua2 "$PJSUA2_URL" --src "$SRC" >&2 \
+    || die "install failed (see above). After fixing it, restart Claude Code or reconnect in /mcp."
+  echo "$VER" > "$PREFIX/.plugin-version"
+  [ -n "${TMP:-}" ] && rm -rf "$TMP"   # exec below skips the EXIT trap
+fi
 
 # default voice: Edge TTS in-process (engine "edge"); an explicit VOICE_TTS or
 # VOICE_TTS_CMD (e.g. "$APP/tools/edge_tts_wav.sh {text} {out}") still wins

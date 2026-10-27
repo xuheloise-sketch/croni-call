@@ -25,6 +25,17 @@
 
 ## 安装
 
+**方式一：在 Claude Code 中安装插件（推荐）**
+
+```
+/plugin marketplace add yanyan1115/ringringring
+/plugin install ringringring@ringringring
+```
+
+安装时按提示填写 SIP 账号、密码与语音识别 key。插件首次启动时自动下载并安装运行环境（实测约 15 秒），无需手动执行脚本。如服务器缺少系统包，插件启动失败并给出一条 `sudo apt-get install …` 命令，执行后在 `/mcp` 中重新连接即可。
+
+**方式二：手动安装**
+
 ```bash
 git clone https://github.com/yanyan1115/ringringring.git && cd ringringring
 # 检查缺失的系统包（不做任何修改）
@@ -33,16 +44,16 @@ plugin-native/bin/install.sh --check
 plugin-native/bin/install.sh --pjsua2 https://github.com/yanyan1115/ringringring/releases/download/v0.1.0/pjsua2-2.17-linux-x86_64-cp311.tar.gz --src .
 ```
 
-安装目录为 `~/.local/share/ringringring`，配置文件为 `~/.config/ringringring/voice.env`（权限 600）。
+两种方式的安装目录均为 `~/.local/share/ringringring`，配置文件为 `~/.config/ringringring/voice.env`（权限 600）。
 
 ### 配置
 
-编辑 `~/.config/ringringring/voice.env`，至少填写以下各项：
+以插件方式安装时，在安装提示中填写即可。也可编辑 `~/.config/ringringring/voice.env`，至少填写以下各项（插件设置中已填写的项优先）：
 
 ```bash
 export VOICE_SIP_ID="sip:<AI 账号>@sip.linphone.org"
 export VOICE_SIP_USER="<AI 账号>"
-export VOICE_SIP_PASS="<密码>"                       # 凭据仅保存在此文件
+export VOICE_SIP_PASS="<密码>"                       # 手动配置时凭据仅保存在此文件
 export VOICE_SIP_CALLEE="sip:<手机账号>@sip.linphone.org"
 export VOICE_DISPLAY_NAME="Claude"                   # 来电显示名称（部分手机不显示 emoji）
 export VOICE_STT_KEY="<Groq key>"                    # 或以 VOICE_STT_ENV_FILE 指向单独的文件
@@ -57,14 +68,7 @@ export VOICE_STT_LANG="zh"
 
 **Claude Code**
 
-在 Claude Code 中执行：
-
-```
-/plugin marketplace add yanyan1115/ringringring
-/plugin install ringringring@ringringring
-```
-
-也可以直接加载本地目录：`claude --plugin-dir <仓库路径>/plugin-native`。
+按上文「安装」方式一安装插件即可。也可以直接加载本地目录：`claude --plugin-dir <仓库路径>/plugin-native`。
 
 加载后提供 `call_start`、`converse`、`call_end` 等工具，以及 `phone-call` skill（拨号、对话、挂断流程与隐私约定）。
 

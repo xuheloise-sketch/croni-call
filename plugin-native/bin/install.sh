@@ -43,7 +43,9 @@ command -v "$PYTHON_BIN" >/dev/null || die "$PYTHON_BIN not found (the prebuilt 
   || die "$PYTHON_BIN is not Python 3.11."
 # --- system runtime libs -----------------------------------------------------------
 missing=()
-libs="$(ldconfig -p)"   # captured once: `ldconfig -p | grep -q` trips pipefail on SIGPIPE
+# ldconfig lives in /sbin, which is not on a normal user's PATH on Debian
+LDCONFIG="$(command -v ldconfig || echo /sbin/ldconfig)"
+libs="$("$LDCONFIG" -p)"   # captured once: `ldconfig -p | grep -q` trips pipefail on SIGPIPE
 for so in libssl.so.3 libasound.so.2 libopus.so.0 libuuid.so.1; do
   grep -qF "$so" <<<"$libs" || missing+=("$so")
 done

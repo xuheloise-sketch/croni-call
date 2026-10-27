@@ -5,7 +5,7 @@
   },
   "metadata": {
     "description": "ringringring: your AI agent calls your phone for a two-way voice conversation over free SIP (Linphone). No Docker.",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "plugins": [
     {
