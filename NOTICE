@@ -1,8 +1,8 @@
 ringringring
 Copyright (c) 2026 Cora and contributors
 
-ringringring is licensed under the GNU General Public License, version 3 or
-(at your option) any later version; see LICENSE.
+ringringring is licensed under the GNU Affero General Public License, version 3
+or (at your option) any later version; see LICENSE.
 
 It is a derivative of Ringback (https://github.com/mohitbadwal/ringback),
 licensed under the Apache License, Version 2.0; see LICENSE-APACHE-2.0. The

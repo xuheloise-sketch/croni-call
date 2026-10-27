@@ -120,4 +120,4 @@ export VOICE_TTS="edge"
 
 ## 许可证
 
-[GPL-3.0-or-later](LICENSE)。本项目派生自 Ringback，上游代码以 Apache 2.0 授权，原许可证与 NOTICE 保留于 [LICENSE-APACHE-2.0](LICENSE-APACHE-2.0) 和 [NOTICE](NOTICE)。依赖的 pjproject 为 GPL-2.0-or-later。
+[AGPL-3.0-or-later](LICENSE)。本项目派生自 Ringback，上游代码以 Apache 2.0 授权，原许可证与 NOTICE 保留于 [LICENSE-APACHE-2.0](LICENSE-APACHE-2.0) 和 [NOTICE](NOTICE)。依赖的 pjproject 为 GPL-2.0-or-later。

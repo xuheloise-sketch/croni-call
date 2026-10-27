@@ -35,4 +35,4 @@ Built on [Ringback](https://github.com/mohitbadwal/ringback) by Mohit Badwal (Ap
 
 ## License
 
-[GPL-3.0-or-later](LICENSE). Upstream Ringback code is Apache 2.0, see [LICENSE-APACHE-2.0](LICENSE-APACHE-2.0) and [NOTICE](NOTICE).
+[AGPL-3.0-or-later](LICENSE). Upstream Ringback code is Apache 2.0, see [LICENSE-APACHE-2.0](LICENSE-APACHE-2.0) and [NOTICE](NOTICE).
