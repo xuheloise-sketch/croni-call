@@ -1,0 +1,17 @@
+{
+  "name": "ringringring",
+  "owner": {
+    "name": "Cora"
+  },
+  "metadata": {
+    "description": "ringringring: your AI agent calls your phone for a two-way voice conversation over free SIP (Linphone). No Docker.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "ringringring",
+      "source": "./plugin-native",
+      "description": "Two-way voice calls from Claude Code to your phone over free SIP (Linphone). Swappable STT and TTS."
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "name": "ringringring",
+  "displayName": "ringringring — your agent calls your phone, no Docker",
+  "version": "0.1.0",
+  "description": "Two-way voice calls from Claude Code to your phone over free SIP (Linphone). Native build: prebuilt pjsua2, no Docker. Ears (STT) and mouth (TTS) are swappable: any OpenAI-compatible transcription endpoint, any TTS command.",
+  "license": "GPL-3.0-or-later",
+  "keywords": [
+    "mcp",
+    "voice",
+    "phone",
+    "sip",
+    "stt",
+    "tts"
+  ],
+  "userConfig": {
+    "sip_id": {
+      "type": "string",
+      "title": "Your SIP address",
+      "description": "e.g. sip:you@sip.linphone.org. Also the number that gets called unless you set one below. Leave blank to use ~/.config/ringringring/voice.env instead."
+    },
+    "sip_user": {
+      "type": "string",
+      "title": "SIP username",
+      "description": "The part before the @."
+    },
+    "sip_pass": {
+      "type": "string",
+      "title": "SIP password",
+      "description": "Stored in your OS keychain, never in a file.",
+      "sensitive": true
+    },
+    "sip_callee": {
+      "type": "string",
+      "title": "Address to call (optional)",
+      "description": "Leave blank to call your own SIP address."
+    },
+    "display_name": {
+      "type": "string",
+      "title": "Caller-ID name (optional)",
+      "description": "Name shown on your phone when the agent calls."
+    },
+    "stt_api_key": {
+      "type": "string",
+      "title": "Speech-to-text API key",
+      "description": "Key for the transcription endpoint below (Groq by default).",
+      "sensitive": true
+    },
+    "stt_url": {
+      "type": "string",
+      "title": "Speech-to-text endpoint (optional)",
+      "description": "Any OpenAI-compatible /audio/transcriptions URL. Blank = Groq."
+    },
+    "stt_model": {
+      "type": "string",
+      "title": "Speech-to-text model (optional)",
+      "description": "Blank = whisper-large-v3-turbo."
+    },
+    "stt_lang": {
+      "type": "string",
+      "title": "Spoken language",
+      "default": "zh",
+      "description": "Language hint for transcription, e.g. zh or en."
+    },
+    "tts_voice": {
+      "type": "string",
+      "title": "Edge TTS voice",
+      "description": "Used by the default mouth (edge-tts). Ignored if VOICE_TTS_CMD is set in voice.env.",
+      "default": "zh-CN-YunxiNeural"
+    },
+    "stun_server": {
+      "type": "string",
+      "title": "STUN server",
+      "default": "stun.linphone.org:3478",
+      "description": "Lets the phone's audio find its way back through NAT. The default works for most setups."
+    },
+    "end_silence": {
+      "type": "string",
+      "title": "Seconds of silence that end your turn",
+      "default": "1.0",
+      "description": "How long you can pause before your turn counts as finished."
+    }
+  }
+}

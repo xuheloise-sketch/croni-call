@@ -1,0 +1,78 @@
+ringringring
+Copyright (c) 2026 Cora and contributors
+
+ringringring is licensed under the GNU General Public License, version 3 or
+(at your option) any later version; see LICENSE.
+
+It is a derivative of Ringback (https://github.com/mohitbadwal/ringback),
+licensed under the Apache License, Version 2.0; see LICENSE-APACHE-2.0. The
+original Ringback notice is reproduced below unchanged.
+
+================================================================================
+ORIGINAL RINGBACK NOTICE
+================================================================================
+
+ringback — ringback-alert / ringback-voice MCP servers
+Copyright (c) 2026 the project contributors
+
+This product is licensed under the Apache License, Version 2.0 (the "License");
+see the LICENSE file. You may not use this project except in compliance with
+the License.
+
+================================================================================
+IMPORTANT LICENSING CAVEAT — the voice feature depends on GPL software
+================================================================================
+
+The phone-VOICE component (voice_agent.py, voice_mcp.py) imports **pjsua2**, the
+Python bindings of **PJPROJECT / PJSIP**, which is licensed under
+**GPL-2.0-or-later OR a commercial license** from Teluu Ltd.
+
+Because of this, if you DISTRIBUTE a combined work that links/imports pjsua2,
+that combined work is subject to GPL obligations (or you must obtain a
+commercial pjproject license). The Apache-2.0 license on THIS repository's own
+source does not, and cannot, relax pjproject's GPL terms.
+
+Practical guidance:
+  * Using the voice feature privately for yourself: no problem.
+  * Redistributing a bundle that includes/links pjsua2: comply with the GPL
+    (share source under GPL-compatible terms) OR buy a pjproject commercial
+    license. See https://github.com/pjsip/pjproject and https://www.pjsip.org.
+  * The phone-ALERT component (server.py: ntfy / Pushover / baresip) does NOT
+    depend on pjproject and is unaffected by this caveat.
+
+This is informational, not legal advice. If you plan to redistribute, consult
+the upstream licenses and, if needed, a lawyer.
+
+================================================================================
+THIRD-PARTY COMPONENTS
+================================================================================
+
+Runtime dependencies (installed by setup.sh / setup-linux.sh / Dockerfile; NOT bundled
+in this repo):
+
+  PJPROJECT / pjsua2  — GPL-2.0-or-later OR commercial — https://www.pjsip.org
+      Used by ringback-voice for the SIP call + media engine.
+
+  whisper.cpp         — MIT License — https://github.com/ggerganov/whisper.cpp
+      Used for on-device speech-to-text. Model files (ggml-*.bin) are
+      downloaded from Hugging Face and are not redistributed here.
+
+  baresip             — BSD-3-Clause — https://github.com/baresip/baresip
+      Used by ringback-alert for the SIP ring + chat message.
+
+  ntfy                — Apache-2.0 — https://github.com/binwiederhier/ntfy
+      Optional self-hosted push server.
+
+  Piper (piper-tts)   — MIT License — https://github.com/rhasspy/piper
+      Default cross-platform neural text-to-speech. Voice models (.onnx) are
+      downloaded from Hugging Face (rhasspy/piper-voices) and not redistributed here.
+  macOS `say`         — Apple system text-to-speech (part of macOS; the macOS fallback).
+  espeak-ng           — GPL-3.0-or-later — https://github.com/espeak-ng/espeak-ng
+      Optional fallback TTS engine on Linux/Windows.
+  ffmpeg              — LGPL/GPL depending on build — https://ffmpeg.org
+      Used to transcode TTS output to the call's audio format.
+
+  Python: mcp (MIT), httpx (BSD-3-Clause), OpenSSL (Apache-2.0).
+
+Each third-party component is the property of its respective owners and is
+governed by its own license. Refer to each project for full terms.
