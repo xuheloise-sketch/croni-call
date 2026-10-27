@@ -62,7 +62,7 @@ export VOICE_STT_LANG="zh"
 
 ### Network
 
-Open **UDP 4000-4100** (RTP audio) in the server firewall or your cloud provider's security group.
+No ports need to be opened: the server sends audio outbound first and uses STUN to traverse NAT. In our test, calls still worked both ways with inbound UDP 4000-4100 denied in the security group. If there is no sound after the call connects, first make sure Linphone is in the foreground; if there is still no sound, try opening UDP 4000-4100 (RTP audio) in the firewall or security group.
 
 ## Connecting your AI
 
