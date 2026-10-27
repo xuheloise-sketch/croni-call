@@ -4,6 +4,14 @@
 
 **Native iOS calls at zero cost.** No Mac, no $99 developer account, no need to buy or write a native iOS app, no database to configure: install the free Linphone app on your iPhone and your AI can call you.
 
+<p align="center">
+  <img src="docs/images/incoming-lockscreen.jpg" width="240" alt="Incoming call on the lock screen">
+  <img src="docs/images/in-call.jpg" width="240" alt="In a call">
+</p>
+<p align="center">
+  <img src="docs/images/incoming-in-game.jpg" width="560" alt="Incoming call while gaming">
+</p>
+
 No phone number to buy, no per-minute billing; speech recognition and speech synthesis both run on free tiers. All you need is a Linux server that is already running your AI. Calls come through even when the iPhone screen is off or Linphone is in the background.
 
 ## Features
