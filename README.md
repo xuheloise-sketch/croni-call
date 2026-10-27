@@ -2,7 +2,7 @@
 
 中文 | [English](README.en.md)
 
-**0 成本。** 无需 Mac，无需 99$ 开发者账号，无需购买或编写 iOS 原生 App，无需配置数据库——iPhone 手机上装个免费的 Linphone，你的 AI 就能给你打电话。
+**0 成本实现 iOS 原生通话。** 无需 Mac，无需 99$ 开发者账号，无需购买或编写 iOS 原生 App，无需配置数据库——iPhone 手机上装个免费的 Linphone，你的 AI 就能给你打电话。
 
 无需购买号码，无按分钟计费；语音识别与语音合成均使用免费额度。仅需一台已在运行 AI 的 Linux 服务器。iPhone 熄屏或 Linphone 处于后台时同样可以来电。
 
