@@ -31,6 +31,14 @@ No phone number to buy, no per-minute billing; speech recognition and speech syn
 | Linphone accounts ×2 | One for the phone, one for the AI (register in the app or at subscribe.linphone.org) | Free |
 | Groq API key | Speech recognition (console.groq.com) | Free tier |
 
+### Does it work in cloud Claude Code or the official Claude app?
+
+The calling service (the plugin program that dials and carries the audio, not your AI itself) has to run on a VPS or your own computer. Cloud Claude Code containers usually block the UDP traffic SIP needs, so calls won't go out from there.
+
+- **VPS + Claude Code**: the easiest path; the steps below are close to one-click.
+- **Your own computer**: needs some adapting for your OS (Windows / macOS / Linux); see the platform notes in `docs/`.
+- **Cloud Claude Code or the official app**: needs a change to the current setup. The plugin is an MCP server, so switch it from local (stdio) to HTTPS, keep the calling service on your VPS or computer, and expose it through a Cloudflare Tunnel. Your cloud AI can then connect to it as a remote connector and place calls. If you need it now, your AI can make this change following that idea. We are also building this version; if you would rather wait, it's coming as soon as we can.
+
 ## Installation
 
 **Option 1: install the plugin in Claude Code (recommended)**
