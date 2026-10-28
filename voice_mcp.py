@@ -12,7 +12,12 @@ PYTHONPATH + the OS dynamic-linker path so `import voice_agent` (pjsua2) resolve
 import fcntl
 import os
 import time
-from mcp.server.fastmcp import FastMCP
+try:
+    # MCP Python SDK 1.x compatibility.
+    from mcp.server.fastmcp import FastMCP
+except ImportError:
+    # MCP Python SDK 2.x renamed the high-level server.
+    from mcp.server import MCPServer as FastMCP
 import functools
 import voice_agent
 from privacy import redact
