@@ -1,0 +1,6 @@
+# Replace call.example.com with the hostname in CRONI_MCP_RESOURCE_URL.
+# Caddy obtains and renews the TLS certificate automatically.
+call.example.com {
+    encode zstd gzip
+    reverse_proxy 127.0.0.1:8765
+}

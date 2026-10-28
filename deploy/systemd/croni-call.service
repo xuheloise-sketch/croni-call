@@ -1,0 +1,18 @@
+[Unit]
+Description=Croni authenticated phone-call MCP gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/croni-call
+Environment=CRONI_ENV_FILE=%h/.config/croni-call/remote.env
+ExecStart=%h/croni-call/.venv/bin/python %h/croni-call/run_remote_mcp.py
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target

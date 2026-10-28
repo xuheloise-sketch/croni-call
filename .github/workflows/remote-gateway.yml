@@ -1,0 +1,31 @@
+name: remote-gateway
+
+on:
+  push:
+    branches: [croni/remote-mcp]
+  pull_request:
+    paths:
+      - "croni_remote/**"
+      - "tests/test_remote_*.py"
+      - "requirements-remote.txt"
+      - "run_remote_mcp.py"
+      - ".github/workflows/remote-gateway.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements-remote.txt
+      - name: Unit tests
+        run: python -m unittest tests.test_remote_config tests.test_remote_policy tests.test_remote_service -v
+      - name: Syntax check
+        run: python -m compileall -q croni_remote run_remote_mcp.py
