@@ -1,0 +1,3 @@
+# Remote MCP gateway. System packages for pjsua2/whisper/TTS are documented separately.
+mcp>=2.2.0,<3
+httpx>=0.27,<1
