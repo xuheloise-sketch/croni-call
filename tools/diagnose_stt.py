@@ -56,7 +56,13 @@ def main() -> int:
         print("[diagnostic] Groq returned an empty transcript", flush=True)
         return 3
     except urllib.error.HTTPError as exc:
+        try:
+            detail = exc.read().decode("utf-8", "replace").strip()
+        except Exception:
+            detail = ""
         print(f"[diagnostic] Groq HTTP error: {exc.code}", flush=True)
+        if detail:
+            print(f"[diagnostic] response: {detail[:800]}", flush=True)
         return 4
     except urllib.error.URLError as exc:
         print(f"[diagnostic] network error: {type(exc.reason).__name__}", flush=True)
