@@ -123,9 +123,11 @@ class CallPolicy:
         """Return non-sensitive operational state."""
         with self._lock:
             state = self._read()
+            today = self._now().astimezone(self.config.timezone).date().isoformat()
+            count = int(state.get("count", 0)) if state.get("date") == today else 0
             return {
                 "active": bool(state.get("active", False)),
-                "calls_today": int(state.get("count", 0)),
+                "calls_today": count,
                 "daily_limit": self.config.daily_call_limit,
                 "quiet_hours": self.config.quiet_start is not None,
             }
