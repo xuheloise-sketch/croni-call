@@ -5,7 +5,7 @@
 set -euo pipefail
 
 REPO_URL="${CRONI_REPO_URL:-https://github.com/xuheloise-sketch/croni-call.git}"
-REPO_BRANCH="${CRONI_REPO_BRANCH:-croni/remote-mcp}"
+REPO_BRANCH="${CRONI_REPO_BRANCH:-croni-vps-stage-a}"
 CHECKOUT="${CRONI_CHECKOUT:-/opt/croni-call-src}"
 PREFIX="${RINGRINGRING_HOME:-/opt/croni-call}"
 CONF="${RINGRINGRING_CONF:-/etc/croni-call/voice.env}"
@@ -97,3 +97,4 @@ chmod 0755 /usr/local/bin/croni-call-test
 say "Installation complete"
 printf '%s\n' 'Run: croni-call-test'
 printf '%s\n' 'Your iPhone should ring. Answer it and listen for the test line.'
+
