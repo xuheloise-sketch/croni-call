@@ -72,3 +72,22 @@ Stage A 安装器现会明确打印本地 STT 安装和诊断命令，避免把�
 6. 接入 ChatGPT 自动化，实现受控的不定时主动来电；
 7. 调整 TTS 音色，并继续评估实时通话延迟；
 8. 新加坡迁移稳定后，撤销香港 VPS 旧密钥、轮换 SIP 密码并安全退役旧实例。
+
+
+## 2026-10-29 latency comparison: Work vs Chat
+
+A same-VPS comparison isolated the dominant conversational delay outside the SIP/STT/TTS runtime:
+
+- Work call: local listen completed at 22:17:12; the next speech turn logged at 22:18:07 with `gap=45.4s`.
+- Chat call: local listen completed at 22:35:06; the next speech turn logged at 22:35:20 with `gap=5.9s`.
+- TTS was stable at 1.16-1.72s, and local Whisper STT at 2.41-2.52s in both paths.
+- Therefore the large Work delay is mainly the model/tool orchestration round trip after transcription, not VPS CPU, SIP media, Edge TTS, or local Whisper.
+
+Current voice/STT settings after live testing:
+
+- Voice: `zh-CN-YunyangNeural`, rate `+6%`, pitch `-6Hz`.
+- Local Whisper language is explicitly forced to `zh` for both server and CLI fallback.
+- `VOICE_LISTEN_END_RMS=300`, `VOICE_END_SILENCE=0.8`, and `VOICE_POST_SPEAK_DRAIN=0.20`.
+- Chinese two-way transcription works; proper names such as Croni may still be phonetically misrecognized.
+
+Near-term operating choice: use Chat for faster conversational calls and Work for engineering/control and notifications. The longer-term low-latency design should run the multi-turn voice loop server-side (or through a realtime voice service), with a compact context handoff and post-call transcript synchronization back to ChatGPT.
