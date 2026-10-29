@@ -98,3 +98,7 @@ say "Installation complete"
 printf '%s\n' 'Run: croni-call-test'
 printf '%s\n' 'Your iPhone should ring. Answer it and listen for the test line.'
 
+printf '%s\n' 'Before enabling two-way MCP calls, install local STT:'
+printf '%s\n' '  bash /opt/croni-call-src/deploy/enable-local-whisper.sh'
+printf '%s\n' 'Then verify it:'
+printf '%s\n' '  /opt/croni-call/venv/bin/python /opt/croni-call-src/tools/diagnose_local_stt.py'
