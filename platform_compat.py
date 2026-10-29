@@ -224,11 +224,15 @@ def _synth_edge(text: str) -> str:
     import edge_tts
 
     voice = os.environ.get("VOICE_EDGE_VOICE", EDGE_VOICE_DEFAULT)
+    rate = os.environ.get("VOICE_EDGE_RATE", "+0%")
+    pitch = os.environ.get("VOICE_EDGE_PITCH", "+0Hz")
+    volume = os.environ.get("VOICE_EDGE_VOLUME", "+0%")
     n = max(1, int(os.environ.get("VOICE_EDGE_RACE", "2")))
 
     async def one() -> bytes:
         buf = bytearray()
-        async for ch in edge_tts.Communicate(text, voice).stream():
+        async for ch in edge_tts.Communicate(
+                text, voice, rate=rate, pitch=pitch, volume=volume).stream():
             if ch["type"] == "audio":
                 buf += ch["data"]
         if not buf:
