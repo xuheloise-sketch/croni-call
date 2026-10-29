@@ -289,8 +289,10 @@ def _clean_text(text: str) -> str:
 
 
 def _transcribe(wav: str) -> str:
-    out = subprocess.run([WHISPER_BIN, "-m", WHISPER_MODEL, "-f", wav, "-nt", "-t", "8"],
-                         capture_output=True, text=True)
+    cmd = [WHISPER_BIN, "-m", WHISPER_MODEL, "-f", wav, "-nt", "-t", "8"]
+    if STT_LANG:
+        cmd += ["-l", STT_LANG]
+    out = subprocess.run(cmd, capture_output=True, text=True)
     if out.returncode != 0:
         _dlog(f"whisper-cli failed (rc={out.returncode}): {out.stderr.strip()[-200:]}")
     return _clean_text(out.stdout)
@@ -449,7 +451,10 @@ def _transcribe_stream(wav: str) -> str:
             (f'--{b}\r\nContent-Disposition: form-data; name="file"; filename="a.wav"\r\n'
              f'Content-Type: audio/wav\r\n\r\n').encode() + audio +
             (f'\r\n--{b}\r\nContent-Disposition: form-data; name="response_format"\r\n\r\n'
-             f'text\r\n--{b}--\r\n').encode())
+             f'text\r\n').encode() +
+            ((f'--{b}\r\nContent-Disposition: form-data; name="language"\r\n\r\n'
+              f'{STT_LANG}\r\n').encode() if STT_LANG else b"") +
+            (f'--{b}--\r\n').encode())
         req = urllib.request.Request(
             _WSRV_URL + "/inference", data=body,
             headers={"Content-Type": f"multipart/form-data; boundary={b}"})
