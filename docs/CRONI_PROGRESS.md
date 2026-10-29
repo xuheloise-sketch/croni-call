@@ -103,4 +103,4 @@ Inbound callback is intentionally deferred. Current priority order:
 4. Synchronize context across Chat, Work, and phone sessions.
 5. Inbound callback / voicemail after the higher-value outbound experience is stable.
 
-The existing "Croni 巡回猫" automation was updated to choose between a normal chat message and an occasional real Croni Call, avoiding an additional scheduled-task slot.
+The existing "Croni 巡回猫" automation keeps its original message cadence. A separate "克罗尼偶尔来电" automation now evaluates weekday windows around 08:00 and between 19:00-23:00, targets 1-3 calls per week, and limits calls to at most one per day.
