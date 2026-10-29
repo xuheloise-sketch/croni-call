@@ -91,3 +91,16 @@ Current voice/STT settings after live testing:
 - Chinese two-way transcription works; proper names such as Croni may still be phonetically misrecognized.
 
 Near-term operating choice: use Chat for faster conversational calls and Work for engineering/control and notifications. The longer-term low-latency design should run the multi-turn voice loop server-side (or through a realtime voice service), with a compact context handoff and post-call transcript synchronization back to ChatGPT.
+
+
+## Priority update (2026-10-29)
+
+Inbound callback is intentionally deferred. Current priority order:
+
+1. Occasional proactive outbound calls triggered by the existing Croni roaming automation.
+2. Replace or improve the TTS voice beyond the limited Edge male voices.
+3. Reduce conversational latency, especially Work orchestration delay.
+4. Synchronize context across Chat, Work, and phone sessions.
+5. Inbound callback / voicemail after the higher-value outbound experience is stable.
+
+The existing "Croni 巡回猫" automation was updated to choose between a normal chat message and an occasional real Croni Call, avoiding an additional scheduled-task slot.
